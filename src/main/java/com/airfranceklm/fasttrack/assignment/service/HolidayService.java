@@ -1,6 +1,8 @@
 package com.airfranceklm.fasttrack.assignment.service;
 
+import com.airfranceklm.fasttrack.assignment.dto.HolidayDto;
 import com.airfranceklm.fasttrack.assignment.enums.HolidayStatus;
+import com.airfranceklm.fasttrack.assignment.mappers.HolidayMapper;
 import com.airfranceklm.fasttrack.assignment.models.Holiday;
 import com.airfranceklm.fasttrack.assignment.repository.HolidayRepository;
 import org.springframework.stereotype.Service;
@@ -20,8 +22,10 @@ public class HolidayService {
         this.holidayRepository = holidayRepository;
     }
 
-    public List<Holiday> getHolidaysByEmployeeId(String employeeId) {
-        return holidayRepository.findByEmployee_EmployeeId(employeeId);
+    public List<HolidayDto> getHolidaysByEmployeeId(String employeeId) {
+        return holidayRepository.findByEmployee_EmployeeId(employeeId).stream()
+                .map(HolidayMapper::toDto)
+                .toList();
     }
 
     public void cancelHoliday(int holidayId) {
@@ -76,7 +80,7 @@ public class HolidayService {
         }
 
         String employeeId = newHoliday.getEmployee().getEmployeeId();
-        List<Holiday> existingHolidays = getHolidaysByEmployeeId(employeeId);
+        List<Holiday> existingHolidays = holidayRepository.findByEmployee_EmployeeId(employeeId);
 
         boolean conflictingHoliday = existingHolidays.stream().anyMatch(existing -> {
             LocalDate existingStart = existing.getStartOfHoliday().toLocalDate();

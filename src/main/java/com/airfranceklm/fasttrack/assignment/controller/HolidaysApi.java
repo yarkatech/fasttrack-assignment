@@ -1,5 +1,6 @@
 package com.airfranceklm.fasttrack.assignment.controller;
 
+import com.airfranceklm.fasttrack.assignment.dto.HolidayDto;
 import com.airfranceklm.fasttrack.assignment.models.Holiday;
 import com.airfranceklm.fasttrack.assignment.service.HolidayService;
 import jakarta.validation.Valid;
@@ -20,7 +21,7 @@ public class HolidaysApi {
     }
 
     @GetMapping
-    public ResponseEntity<List<Holiday>> getHolidaysByEmployeeId(@RequestParam String employeeId) {
+    public ResponseEntity<List<HolidayDto>> getHolidaysByEmployeeId(@RequestParam String employeeId) {
         return new ResponseEntity<>(holidayService.getHolidaysByEmployeeId(employeeId), HttpStatus.OK);
     }
 

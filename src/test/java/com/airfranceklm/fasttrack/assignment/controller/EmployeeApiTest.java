@@ -1,6 +1,5 @@
 package com.airfranceklm.fasttrack.assignment.controller;
 
-import com.airfranceklm.fasttrack.assignment.models.Employee;
 import com.airfranceklm.fasttrack.assignment.repository.EmployeeRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,18 +9,15 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class EmployeeControllerTest {
+class EmployeeApiTest {
 
     @Autowired
     private MockMvc mockMvc;
-
-    @Autowired
-    private EmployeeRepository employeeRepository;
 
     @Test
     void testCreateEmployee() throws Exception {
