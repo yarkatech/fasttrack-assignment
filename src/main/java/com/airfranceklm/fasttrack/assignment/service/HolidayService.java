@@ -122,4 +122,19 @@ public class HolidayService {
 
         return workingDays;
     }
+
+    public Holiday updateHoliday(int holidayId, Holiday updatedHoliday) {
+        Holiday existing = holidayRepository.findById(holidayId)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Holiday with ID " + holidayId + " does not exist."
+                ));
+
+        existing.setHolidayLabel(updatedHoliday.getHolidayLabel());
+        existing.setStartOfHoliday(updatedHoliday.getStartOfHoliday());
+        existing.setEndOfHoliday(updatedHoliday.getEndOfHoliday());
+
+        validateHolidayDates(existing);
+
+        return holidayRepository.save(existing);
+    }
 }

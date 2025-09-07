@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/holidays")
 public class HolidaysApi {
@@ -34,5 +35,16 @@ public class HolidaysApi {
     public ResponseEntity<Void> cancelHoliday(@PathVariable int holidayId) {
         holidayService.cancelHoliday(holidayId);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{holidayId}")
+    public ResponseEntity<Holiday> updateHoliday(
+            @PathVariable int holidayId,
+            @Valid @RequestBody Holiday updatedHoliday
+    ) {
+        return new ResponseEntity<>(
+                holidayService.updateHoliday(holidayId, updatedHoliday),
+                HttpStatus.OK
+        );
     }
 }

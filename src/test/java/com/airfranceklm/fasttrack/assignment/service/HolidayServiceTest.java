@@ -111,4 +111,30 @@ class HolidayServiceTest {
 
         assertTrue(ex.getMessage().contains("does not exist"));
     }
+
+    @Test
+    void updateHolidayTest() {
+        LocalDate startDate = LocalDate.now().plusDays(10);
+        LocalDate endDate = startDate.plusDays(5);
+
+        Holiday existing = createHoliday("klm012345", startDate, endDate);
+        existing.setHolidayId(1);
+        existing.setStatus(HolidayStatus.DRAFT);
+
+        Holiday updated = createHoliday("klm012345", startDate.plusDays(1), endDate.plusDays(1));
+        updated.setHolidayLabel("Updated Holiday");
+
+        when(holidayRepository.findById(1)).thenReturn(Optional.of(existing));
+        when(holidayRepository.findByEmployee_EmployeeId("klm012345")).thenReturn(Collections.emptyList());
+        when(holidayRepository.save(any(Holiday.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        Holiday result = holidayService.updateHoliday(1, updated);
+
+        assertNotNull(result);
+        assertEquals("Updated Holiday", result.getHolidayLabel());
+        assertEquals(startDate.plusDays(1), result.getStartOfHoliday().toLocalDate());
+        assertEquals(endDate.plusDays(1), result.getEndOfHoliday().toLocalDate());
+
+        verify(holidayRepository, times(1)).save(existing);
+    }
 }
