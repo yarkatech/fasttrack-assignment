@@ -40,33 +40,12 @@ public class HolidayService {
 
     public Holiday scheduleHoliday(Holiday holiday) {
         validateHolidayDates(holiday);
-//        checkForHolidayOverlap(holiday);
         if (holiday.getStatus() == null) {
             holiday.setStatus(HolidayStatus.DRAFT);
         }
 
         return holidayRepository.save(holiday);
     }
-
-//    private void checkForHolidayOverlap(Holiday holiday) {
-//        LocalDate startDate = holiday.getStartOfHoliday().toLocalDate();
-//        LocalDate endDate = holiday.getEndOfHoliday().toLocalDate();
-//
-//        //Normaal gesproken een betere query van maken
-//        List<Holiday> existingHolidays = holidayRepository.findAll();
-//
-//        boolean conflict = existingHolidays.stream().anyMatch(existing -> {
-//            LocalDate existingStart = existing.getStartOfHoliday().toLocalDate();
-//            LocalDate existingEnd = existing.getEndOfHoliday().toLocalDate();
-//            return !endDate.isBefore(existingStart) && !startDate.isAfter(existingEnd);
-//        });
-//
-//        if (conflict) {
-//            throw new IllegalArgumentException(
-//                    "The new holiday overlaps with an existing holiday."
-//            );
-//        }
-//    }
 
     private void validateHolidayDates(Holiday newHoliday) {
         LocalDate today = LocalDate.now();
